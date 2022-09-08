@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <property name="now" value="now()" dbms="postgresql"/>
+
+
+
+
+    <changeSet id="1" author="c_sudadat">
+       <createTable tableName="orders">
+           <column  name="order_id"  type="VARCHAR(20)">
+               <constraints  nullable="false"  primaryKey="true"  unique="true"/>
+           </column>
+           <column  name="customer_id"  type="VARCHAR(255)" />
+           <column  name="status"  type="VARCHAR(30)" />
+           <column  name="currency"  type="VARCHAR(30)" />
+           <column  name="total_amount"  type="currency" />
+           <column  name="funded_amount"  type="currency" />
+           <column name="last_updated_on" type="java.sql.Types.TIMESTAMP_WITH_TIMEZONE" defaultValueComputed="${now}" />
+           <column name="created_on" type="java.sql.Types.TIMESTAMP_WITH_TIMEZONE" defaultValueComputed="${now}"/>
+
+       </createTable>
+   </changeSet>
+</databaseChangeLog>
