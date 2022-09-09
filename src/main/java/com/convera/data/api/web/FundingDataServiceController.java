@@ -104,10 +104,11 @@ public class FundingDataServiceController {
 
             if (order.isPresent()) {
                 Order orderRec = order.get();
-                orderPersistResponseModel = getPersistResponseModel(order);
+
                 orderRec.setStatus(orderUpdateRequestModel.getOrderStatus());
                 orderRec.setFundedAmount(orderUpdateRequestModel.getFundedAmount());
                 orderRec.setLastUpdatedOn(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+                orderPersistResponseModel = getPersistResponseModel(order);
                 orderRepository.save(orderRec);
             }
 
@@ -184,5 +185,6 @@ public class FundingDataServiceController {
 
     private class OrderFetchResponse extends  CommonResponse<Order>
     {}
+
 
 }

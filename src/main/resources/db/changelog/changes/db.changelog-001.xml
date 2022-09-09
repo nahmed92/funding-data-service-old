@@ -5,7 +5,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
-    <property name="now" value="now()" dbms="postgresql"/>
 
 
 
@@ -20,8 +19,8 @@
            <column  name="currency"  type="VARCHAR(30)" />
            <column  name="total_amount"  type="currency" />
            <column  name="funded_amount"  type="currency" />
-           <column name="last_updated_on" type="java.sql.Types.TIMESTAMP_WITH_TIMEZONE" defaultValueComputed="${now}" />
-           <column name="created_on" type="java.sql.Types.TIMESTAMP_WITH_TIMEZONE" defaultValueComputed="${now}"/>
+           <column name="last_updated_on" type="java.sql.Types.TIMESTAMP_WITH_TIMEZONE"  />
+           <column name="created_on" type="java.sql.Types.TIMESTAMP_WITH_TIMEZONE" />
 
        </createTable>
    </changeSet>

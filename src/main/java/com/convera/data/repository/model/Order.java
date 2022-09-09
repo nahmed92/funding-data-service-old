@@ -23,35 +23,35 @@ import java.sql.Timestamp;
 public class Order {
 
     @Id
-    @JsonProperty
+    @JsonProperty("orderId")
     private String orderId;
 
     @NotNull
-    @JsonProperty
+    @JsonProperty("customerId")
     private String customerId;
 
     @NotNull
-    @JsonProperty
+    @JsonProperty("status")
     private String status;
 
     @NotNull
-    @JsonProperty
+    @JsonProperty("currency")
     private String currency;
 
     @NotNull
-    @JsonProperty
+    @JsonProperty("createdOn")
     private Timestamp createdOn;
 
    // @NotNull
-    @JsonProperty
+    @JsonProperty("lastUpdatedOn")
     private Timestamp lastUpdatedOn;
 
-   // @NotNull
-    @JsonProperty
+   // @NotNull("lastUpdatedOn")
+    @JsonProperty("totalAmount")
     private BigDecimal totalAmount;
 
     @NotNull
-    @JsonProperty
+    @JsonProperty("fundedAmount")
     private BigDecimal fundedAmount;
 
 
