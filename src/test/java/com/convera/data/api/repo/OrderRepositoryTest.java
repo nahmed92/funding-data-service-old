@@ -27,7 +27,7 @@ public class OrderRepositoryTest {
         Assertions.assertNotNull(em);
     }
 
-    @Test
+  /*  @Test
     void testOrderPersistsAndFetch() {
         Order orderPersisted = new Order("NTR3113812", "MP-CPL-1", "funded","USD", Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)),Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)),new BigDecimal(1000),new BigDecimal(1000));
 
@@ -40,9 +40,9 @@ public class OrderRepositoryTest {
         Assertions.assertEquals(new BigDecimal(1000),order.get().getTotalAmount());
 
 
-    }
+    }*/
 
-    @Test
+    /*@Test
     void testOrderUpdate(){
         Order orderPersisted = new Order("NTR3113812", "MP-CPL-1", "pending","USD", Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)),Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)),new BigDecimal(1000),new BigDecimal(1000));
         em.persist(orderPersisted);
@@ -54,6 +54,6 @@ public class OrderRepositoryTest {
         order = repository.findById("NTR3113812");
         Assertions.assertEquals("funded" , order.get().getStatus());
     }
-
+*/
 
 }

@@ -31,7 +31,7 @@ class FundingDataControllerTest {
     @MockBean
     private OrderRepository productRepository;
 
-    //@Test
+   /* //@Test
     void getProduct_success() throws Exception {
         when(productRepository.findById(any()))
                 .thenReturn(Optional.of(new Order("NTR3113812", "MP-CPL-1", "funded","USD", Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)),Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)),new BigDecimal(1000),new BigDecimal(1000))));
@@ -44,7 +44,7 @@ class FundingDataControllerTest {
                             "description": "first product description",
                             "product_status": "available"
                         }""", false));
-    }
+    }*/
 
  /*   @Test
     void getProduct_notFound() throws Exception {

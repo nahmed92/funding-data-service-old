@@ -107,7 +107,7 @@ public class FundingDataServiceController {
 
                 orderRec.setStatus(orderUpdateRequestModel.getOrderStatus());
                 orderRec.setFundedAmount(orderUpdateRequestModel.getFundedAmount());
-                orderRec.setLastUpdatedOn(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+                orderRec.setLastUpdatedOn(LocalDateTime.now(ZoneOffset.UTC));
                 orderPersistResponseModel = getPersistResponseModel(order);
                 orderRepository.save(orderRec);
             }
