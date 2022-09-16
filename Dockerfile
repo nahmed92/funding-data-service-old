@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:x86_64-alpine-jdk-11.0.11_9-slim
+FROM openjdk:17-oracle
 ARG JAR_FILE
 COPY ${JAR_FILE} funding-data-service-0.0.1-SNAPSHOT.jar
 
