@@ -16,44 +16,47 @@ import java.util.Optional;
 
 @DataJpaTest
 public class OrderRepositoryTest {
-    @Autowired
-    private TestEntityManager em;
 
-    @Autowired
-    private OrderRepository repository;
+  @Autowired
+  private TestEntityManager em;
 
-    @Test
-    public void contextLoads() {
-        Assertions.assertNotNull(em);
-    }
+  @Autowired
+  private OrderRepository repository;
 
-  /*  @Test
-    void testOrderPersistsAndFetch() {
-        Order orderPersisted = new Order("NTR3113812", "MP-CPL-1", "funded","USD", Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)),Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)),new BigDecimal(1000),new BigDecimal(1000));
+  LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
 
-        em.persist(orderPersisted);
+  @Test
+  public void contextLoads() {
+    Assertions.assertNotNull(em);
+  }
 
-        Optional<Order> order = repository.findById("NTR3113812");
-        Assertions.assertEquals(Boolean.TRUE, order.isPresent());
-        Assertions.assertEquals("NTR3113812", order.get().getOrderId());
-        Assertions.assertEquals("USD",order.get().getCurrency());
-        Assertions.assertEquals(new BigDecimal(1000),order.get().getTotalAmount());
+  @Test
+  void testOrderPersistsAndFetch() {
+    Order orderPersisted = new Order("NTR3113812", "MP-CPL-1", "funded", "USD", now, now, new BigDecimal(1000),
+        new BigDecimal(1000));
 
+    em.persist(orderPersisted);
 
-    }*/
+    Optional<Order> order = repository.findById("NTR3113812");
+    Assertions.assertEquals(Boolean.TRUE, order.isPresent());
+    Assertions.assertEquals("NTR3113812", order.get().getOrderId());
+    Assertions.assertEquals("USD", order.get().getCurrency());
+    Assertions.assertEquals(new BigDecimal(1000), order.get().getTotalAmount());
 
-    /*@Test
-    void testOrderUpdate(){
-        Order orderPersisted = new Order("NTR3113812", "MP-CPL-1", "pending","USD", Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)),Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)),new BigDecimal(1000),new BigDecimal(1000));
-        em.persist(orderPersisted);
-        Optional<Order> order = repository.findById("NTR3113812");
-        Assertions.assertEquals("pending" , order.get().getStatus());
-        order.get().setStatus("funded");
-        repository.save(order.get());
-        order = null;
-        order = repository.findById("NTR3113812");
-        Assertions.assertEquals("funded" , order.get().getStatus());
-    }
-*/
+  }
+
+  @Test
+  void testOrderUpdate() {
+    Order orderPersisted = new Order("NTR3113812", "MP-CPL-1", "pending", "USD", now, now, new BigDecimal(1000),
+        new BigDecimal(1000));
+    em.persist(orderPersisted);
+    Optional<Order> order = repository.findById("NTR3113812");
+    Assertions.assertEquals("pending", order.get().getStatus());
+    order.get().setStatus("funded");
+    repository.save(order.get());
+    order = null;
+    order = repository.findById("NTR3113812");
+    Assertions.assertEquals("funded", order.get().getStatus());
+  }
 
 }
