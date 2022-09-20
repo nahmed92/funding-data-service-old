@@ -1,0 +1,70 @@
+image: maven:3.8.3-openjdk-17
+
+variables:
+  DOCKER_DRIVER: overlay
+  SPRING_PROFILES_ACTIVE: gitlab-ci
+  IMAGE_DIND: docker:latest
+  BUILD_NAME: funding-data-service
+  ART_REPO: $CONVERA_DOCKER_ART_REPO
+  DOCKER: $CONVERA_DOCKER_ART_REPO${CI_PROJECT_NAME}:$CI_JOB_ID
+
+stages:
+  - build
+  - test
+  - package
+  - dockerize
+
+build-job:
+  stage: build
+  script: 
+    - echo 'Building Project'
+    - echo 'CI_PROJECT_NAME::' ${CI_PROJECT_NAME}
+    - echo 'CI_BUILD_REF_NAME::' ${CI_BUILD_REF_NAME}
+    - "mvn clean compile -s settings.xml"
+  artifacts:
+    paths:
+      - target/*.jar
+
+test-job:
+    stage: test
+    script:
+      - echo 'Unit Test execution under way'
+      - 'mvn test -s settings.xml'
+
+
+package-job:
+  before_script:
+    - echo 'Packaging under way:'
+    - curl -fL https://getcli.jfrog.io | sh
+    - ./jfrog config add artifactory --artifactory-url=$ARTIFACTORY_URL --user=$ARTIFACTORY_USER --password=$ARTIFACTORY_PASS
+    - ./jfrog rt c show
+    - export M2_HOME=/usr/share/maven
+    - sed -i 's,MAVEN_REPO_KEY,'"$MAVEN_SHAPSHOT_REPO"',g' ci-config.yml
+    - echo 'Packaging successful.'
+  stage: package
+  script: 
+    - echo 'Packaging Project'
+    - "mvn package -DskipTests -s settings.xml"
+    - ./jfrog rt mvn "clean install" ci-config.yml --build-name=$BUILD_NAME --build-number=$CI_JOB_ID
+    - ./jfrog rt bce $BUILD_NAME $CI_JOB_ID
+    - ./jfrog rt bp $BUILD_NAME $CI_JOB_ID
+    - echo 'Packaging successful pushed to artifactory '$ARTIFACTORY_URL
+  artifacts:
+    paths:
+      - target/*.jar
+
+Dockerize-job:
+  image: $IMAGE_DIND
+  stage: dockerize
+  services:
+    - docker:dind
+  script:
+    - echo 'Dockerizing under way'
+    - docker build -t $DOCKER .
+    - echo 'docker build successfully.'
+
+    - docker login -u $ARTIFACTORY_USER -p $ARTIFACTORY_PASS $ARTIFACTORY_URL
+    - echo 'docker login successfully.'
+
+    - docker push ${DOCKER}
+    - echo 'docker push successful to artifactory '$ARTIFACTORY_URL
