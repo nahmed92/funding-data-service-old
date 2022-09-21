@@ -68,12 +68,13 @@ public class FundingDataServiceController {
       @Parameter(description = "Order ID", example = "NTR3113812") @PathVariable String orderId,
       @RequestHeader(value = "correlationID", required = false) String correlationID) {
 
+    final String orderPath = "/order/";
     Optional<Order> optionalOrder = orderRepository.findById(orderId);
     if (optionalOrder.isPresent()) {
       return ResponseEntity
-          .ok(CommonResponseUtil.createResponse200(optionalOrder.get(), "/order/" + orderId, correlationID));
+          .ok(CommonResponseUtil.createResponse200(optionalOrder.get(), orderPath + orderId, correlationID));
     } else {
-      CommonResponse<?> response404 = CommonResponseUtil.createResponse404(null, "/order/" + orderId, correlationID,
+      CommonResponse<?> response404 = CommonResponseUtil.createResponse404(null, orderPath + orderId, correlationID,
           Collections.singletonList(ResponseErrorCode404.ERR_40400.build("funding", "Record for given id not found.")));
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response404);
     }

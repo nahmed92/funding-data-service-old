@@ -50,7 +50,9 @@ class FundingDataControllerTest {
   @Test
   void shouldThrowOrderNotFound() throws Exception {
     when(orderRepository.findById(any())).thenReturn(Optional.empty());
-    this.mockMvc.perform(get("/convera/funding/orders/NTR297612")).andExpect(status().isNotFound());
+    String expectedResponse = TestUtils.getContentFromJsonFile("dataset/order_not_found.json");
+    this.mockMvc.perform(get("/convera/funding/orders/NTR297612")).andExpect(status().isNotFound())
+        .andExpect(content().json(expectedResponse, false));
   }
 
   @Test
@@ -86,13 +88,14 @@ class FundingDataControllerTest {
 
   @Test
   void shouldThrowNotFoundExceptionWhenUpdateOrderNotFound() throws Exception {
-    when(orderRepository.findById("NTR297622")).thenReturn(Optional.empty());
-
+    when(orderRepository.findById("NTR297612")).thenReturn(Optional.empty());
     String updateRequest = TestUtils.getContentFromJsonFile("dataset/update_order_request.json");
+    String expected = TestUtils.getContentFromJsonFile("dataset/order_not_found.json");
     this.mockMvc
         .perform(
-            patch("/convera/funding/orders/TR297622").contentType(MediaType.APPLICATION_JSON).content(updateRequest))
-        .andExpect(status().isNotFound());
+            patch("/convera/funding/orders/NTR297612").contentType(MediaType.APPLICATION_JSON).content(updateRequest))
+        .andExpect(status().isNotFound()).andExpect(content().json(expected, false));
+
   }
 
   @Test
