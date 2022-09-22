@@ -32,8 +32,8 @@ public class OrderRepositoryTest {
 
   @Test
   void testOrderPersistsAndFetch() {
-    Order orderPersisted = new Order("NTR3113812", "MP-CPL-1", "funded", "USD", now, now, new BigDecimal(1000),
-        new BigDecimal(1000));
+    Order orderPersisted = new Order("NTR3113812", "MP-CPL-1", "funded", "USD", new BigDecimal(1000),
+        new BigDecimal(1000) , now, now);
 
     em.persist(orderPersisted);
 
@@ -47,8 +47,8 @@ public class OrderRepositoryTest {
 
   @Test
   void testOrderUpdate() {
-    Order orderPersisted = new Order("NTR3113812", "MP-CPL-1", "pending", "USD", now, now, new BigDecimal(1000),
-        new BigDecimal(1000));
+    Order orderPersisted = new Order("NTR3113812", "MP-CPL-1", "pending", "USD", new BigDecimal(1000),
+        new BigDecimal(1000), now, now);
     em.persist(orderPersisted);
     Optional<Order> order = repository.findById("NTR3113812");
     Assertions.assertEquals("pending", order.get().getStatus());
