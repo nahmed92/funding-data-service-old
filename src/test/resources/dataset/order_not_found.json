@@ -1,0 +1,16 @@
+{
+  "data": null,
+  "metadata": {
+    "statusCode": 404,
+    "statusDescription": "Not found",
+    "path": "/order/NTR297612",
+    "errors": [
+      {
+        "errorCode": 40400,
+        "errorMessage": "Not found",
+        "errorDetails": "Record for given id not found.",
+        "serviceName": "funding"
+      }
+    ]
+  }
+}

@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 
 @Data
 public class OrderUpdateRequestModel {
-    @JsonProperty
-    private String orderStatus;
+  @JsonProperty
+  private String orderStatus;
 
-    @JsonProperty
-    private BigDecimal fundedAmount;
+  @JsonProperty
+  private BigDecimal fundedAmount;
 }
