@@ -60,7 +60,7 @@ public class FundingDataServiceController {
   @Operation(operationId = "getOrder", responses = {
       @ApiResponse(responseCode = "200", description = "Get Order details", content = {
           @Content(mediaType = "application/json", schema = @Schema(implementation = OrderFetchResponse.class)) }),
-      @ApiResponse(description = "Not found", content = {
+      @ApiResponse(responseCode = "404", description = "Not found", content = {
           @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponse.class)) }) })
   @Trace
   @GetMapping("orders/{orderId}")
@@ -133,8 +133,8 @@ public class FundingDataServiceController {
   @Operation(operationId = "persistOrder", responses = {
       @ApiResponse(responseCode = "200", description = "order response", content = {
           @Content(mediaType = "application/json", schema = @Schema(implementation = OrderPersistenceResponse.class)) }),
-      @ApiResponse(description = "unexpected error", content = {
-          @Content(mediaType = "application/json", schema = @Schema(implementation = OrderPersistenceResponse.class)) }) })
+      @ApiResponse(responseCode = "500", description = "unexpected error", content = {
+          @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponse.class)) }) })
   @Trace
   @PostMapping(value = "orders", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<CommonResponse<OrderPersistResponseModel>> saveOrder(@RequestBody Order order,

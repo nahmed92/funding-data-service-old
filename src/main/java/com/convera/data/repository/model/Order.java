@@ -27,6 +27,7 @@ import lombok.NoArgsConstructor;
 public class Order {
 
   @Id
+  @NotNull
   @JsonProperty("orderId")
   private String orderId;
 
@@ -41,21 +42,22 @@ public class Order {
   @NotNull
   @JsonProperty("currency")
   private String currency;
-
+  
   @NotNull
+  @JsonProperty("totalAmount")
+  private BigDecimal totalAmount;
+
+  @JsonProperty("fundedAmount")
+  private BigDecimal fundedAmount;
+
   @JsonProperty("createdOn")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   private LocalDateTime createdOn;
 
+  @NotNull
   @JsonProperty("lastUpdatedOn")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   private LocalDateTime lastUpdatedOn;
 
-  @JsonProperty("totalAmount")
-  private BigDecimal totalAmount;
-
-  @NotNull
-  @JsonProperty("fundedAmount")
-  private BigDecimal fundedAmount;
 
 }
