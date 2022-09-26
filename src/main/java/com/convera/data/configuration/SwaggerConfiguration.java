@@ -11,14 +11,13 @@ import org.springdoc.core.SpringDocUtils;
 import org.springframework.context.annotation.Configuration;
 
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 
 @Configuration
 public class SwaggerConfiguration {
 	@PostConstruct
 	    public void localDateTimeSchemaConfig() {
-	        Schema<LocalDateTime> schema = new Schema<>();
-	        schema.example(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
-	        SpringDocUtils.getConfig().replaceWithSchema(LocalDateTime.class, schema);
+		SpringDocUtils.getConfig().replaceWithSchema(LocalDateTime.class, new StringSchema().example(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"))));
 	    }
 
 }
