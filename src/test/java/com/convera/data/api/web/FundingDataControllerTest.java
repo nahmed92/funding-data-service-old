@@ -41,8 +41,8 @@ class FundingDataControllerTest {
   void shouldGetOrder() throws Exception {
     String expectedResponse = TestUtils.getContentFromJsonFile("dataset/order_fetch_response.json");
     when(orderRepository.findById(any()))
-        .thenReturn(Optional.of(new Order("NTR297622", "MP-CPL-1", "FUNDED", "USD", new BigDecimal(34555), new BigDecimal(24000), now.of(2022, 9, 14, 16, 56, 30),
-                now.of(2022, 9, 14, 16, 56, 30))));
+        .thenReturn(Optional.of(new Order("NTR297622", "MP-CPL-1", "COMMIT", "USD", new BigDecimal(34555), new BigDecimal(24000), now.of(2022, 9, 14, 16, 56, 30),
+                now.of(2022, 9, 14, 16, 56, 30),"PENDING")));
     this.mockMvc.perform(get("/convera/funding/orders/NTR3113812")).andExpect(status().isOk())
         .andExpect(content().json(expectedResponse, false));
   }
@@ -73,13 +73,13 @@ class FundingDataControllerTest {
   @Test
   void shouldUpdateOrder() throws Exception {
     Order order = new Order("NTR297622", "MP-CPL-1", "Pending", "USD", new BigDecimal(34555), new BigDecimal(24000) , now.of(2022, 9, 14, 16, 56, 30),
-            now.of(2022, 9, 14, 16, 56, 30));
+            now.of(2022, 9, 14, 16, 56, 30),"FUNDED");
     when(orderRepository.findById("NTR297622")).thenReturn(Optional.of(order));
 
     String updateRequest = TestUtils.getContentFromJsonFile("dataset/update_order_request.json");
 
     when(orderRepository.save(order)).thenReturn(new Order("NTR297622", "MP-CPL-1", "Funded", "USD",
-         new BigDecimal(34555), new BigDecimal(3100),now.of(2022, 9, 14, 16, 56, 30), now.of(2022, 9, 14, 16, 56, 30)));
+         new BigDecimal(34555), new BigDecimal(3100),now.of(2022, 9, 14, 16, 56, 30), now.of(2022, 9, 14, 16, 56, 30), "FUNDED"));
     this.mockMvc
         .perform(
             patch("/convera/funding/orders/NTR297622").contentType(MediaType.APPLICATION_JSON).content(updateRequest))

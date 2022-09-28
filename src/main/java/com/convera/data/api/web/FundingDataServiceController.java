@@ -1,24 +1,5 @@
 package com.convera.data.api.web;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Collections;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.convera.common.template.CommonResponse;
 import com.convera.common.template.response.error.constants.ResponseErrorCode404;
 import com.convera.common.template.response.error.constants.ResponseErrorCode500;
@@ -27,7 +8,6 @@ import com.convera.data.api.web.model.OrderPersistResponseModel;
 import com.convera.data.api.web.model.OrderUpdateRequestModel;
 import com.convera.data.repository.OrderRepository;
 import com.convera.data.repository.model.Order;
-
 import datadog.trace.api.Trace;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,6 +16,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Collections;
+import java.util.Optional;
 
 /**
  * The Funding Data Service provides the following:
@@ -54,6 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @Validated
 @Tag(name = "Funding Data Service", description = "Funding Data Service")
 public class FundingDataServiceController {
+  public static final String FUNDING_ORDERS = "funding/orders";
   @Autowired
   OrderRepository orderRepository;
 
@@ -64,7 +56,7 @@ public class FundingDataServiceController {
           @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponse.class)) }) })
   @Trace
   @GetMapping("orders/{orderId}")
-  public ResponseEntity<?> getOrderDetails(
+  public ResponseEntity<CommonResponse<Order>> getOrderDetails(
       @Parameter(description = "Order ID", example = "NTR3113812") @PathVariable String orderId,
       @RequestHeader(value = "correlationID", required = false) String correlationID) {
 
@@ -74,9 +66,8 @@ public class FundingDataServiceController {
       return ResponseEntity
           .ok(CommonResponseUtil.createResponse200(optionalOrder.get(), orderPath + orderId, correlationID));
     } else {
-      CommonResponse<?> response404 = CommonResponseUtil.createResponse404(null, orderPath + orderId, correlationID,
-          Collections.singletonList(ResponseErrorCode404.ERR_40400.build("funding", "Record for given id not found.")));
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response404);
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(CommonResponseUtil.createResponse404(null, orderPath + orderId, correlationID,
+              Collections.singletonList(ResponseErrorCode404.ERR_40400.build("funding", "Record for given id not found."))));
     }
 
   }
@@ -102,7 +93,7 @@ public class FundingDataServiceController {
       if (order.isPresent()) {
         Order orderRec = order.get();
 
-        orderRec.setStatus(orderUpdateRequestModel.getOrderStatus());
+        orderRec.setFundingStatus(orderUpdateRequestModel.getFundingStatus());
         orderRec.setFundedAmount(orderUpdateRequestModel.getFundedAmount());
         orderRec.setLastUpdatedOn(LocalDateTime.now(ZoneOffset.UTC));
         orderPersistResponseModel = getPersistResponseModel(order);
@@ -111,7 +102,7 @@ public class FundingDataServiceController {
 
       if (orderPersistResponseModel != null) {
         return ResponseEntity
-            .ok(CommonResponseUtil.createResponse200(orderPersistResponseModel, "funding/orders", correlationID));
+            .ok(CommonResponseUtil.createResponse200(orderPersistResponseModel, FUNDING_ORDERS, correlationID));
 
       }
 
@@ -122,7 +113,7 @@ public class FundingDataServiceController {
     } catch (Exception ex) {
       log.error("Error persisting order record: ", ex);
       return ResponseEntity.internalServerError()
-          .body(CommonResponseUtil.createResponse500(orderPersistResponseModel, "funding/orders", correlationID,
+          .body(CommonResponseUtil.createResponse500(orderPersistResponseModel, FUNDING_ORDERS, correlationID,
               Collections.singletonList(ResponseErrorCode500.ERR_50000.build("funding-data-service",
                   "Error in updating the record in the DB. Message: " + ex.getMessage()))));
 
@@ -144,11 +135,11 @@ public class FundingDataServiceController {
       Order dbOrder = orderRepository.save(order);
       OrderPersistResponseModel persistResponseModel = getPersistResponseModel(Optional.ofNullable(dbOrder));
       return ResponseEntity
-          .ok(CommonResponseUtil.createResponse200(persistResponseModel, "funding/orders", correlationID));
+          .ok(CommonResponseUtil.createResponse200(persistResponseModel, FUNDING_ORDERS, correlationID));
     } catch (Exception ex) {
       log.error("Error persisting order record: ", ex);
       return ResponseEntity.internalServerError()
-          .body(CommonResponseUtil.createResponse500(null, "funding/orders", correlationID,
+          .body(CommonResponseUtil.createResponse500(null, FUNDING_ORDERS, correlationID,
               Collections.singletonList(ResponseErrorCode500.ERR_50000.build("funding-data-service",
                   "Error in saving the record in the DB. Message: " + ex.getMessage()))));
 
@@ -160,7 +151,8 @@ public class FundingDataServiceController {
     OrderPersistResponseModel orderPersistResponseModel = null;
     if (order.isPresent()) {
       orderPersistResponseModel = OrderPersistResponseModel.builder().orderId(order.get().getOrderId())
-          .status(order.get().getStatus()).lastUpdatedOn(order.get().getLastUpdatedOn()).build();
+          .status(order.get().getStatus()).lastUpdatedOn(order.get().getLastUpdatedOn())
+              .fundingStatus(order.get().getFundingStatus()).build();
     }
 
     return orderPersistResponseModel;

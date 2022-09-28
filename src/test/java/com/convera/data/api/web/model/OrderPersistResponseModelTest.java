@@ -12,16 +12,17 @@ class OrderPersistResponseModelTest {
   LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
 
   @Test
-  void OrderPersistResponseModelAllArugTest() {
-    OrderPersistResponseModel order = new OrderPersistResponseModel("NTR3113812", "Pending", now);
+  void OrderPersistResponseModelAllArgTest() {
+    OrderPersistResponseModel order = new OrderPersistResponseModel("NTR3113812", "COMMIT", "PENDING",now);
     assertThat(order.getOrderId()).isEqualTo("NTR3113812");
-    assertThat(order.getStatus()).isEqualTo("Pending");
+    assertThat(order.getStatus()).isEqualTo("COMMIT");
+    assertThat(order.getFundingStatus()).isEqualTo("PENDING");
     assertThat(order.getLastUpdatedOn()).isEqualTo(now);
   }
 
   @Test
-  void OrderPersistResponseModelNoArugTest() {
-    OrderPersistResponseModel order = new OrderPersistResponseModel("NTR3113812", "Pending", now);
+  void OrderPersistResponseModelNoArgTest() {
+    OrderPersistResponseModel order = new OrderPersistResponseModel("NTR3113812", "COMMIT", "PENDING", now);
     assertThat(order).isNotNull();
 
   }
