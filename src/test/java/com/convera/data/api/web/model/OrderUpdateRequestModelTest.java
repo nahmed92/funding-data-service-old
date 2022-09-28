@@ -16,9 +16,9 @@ class OrderUpdateRequestModelTest {
   void orderUpdateRequestModelAllArgumentConstructorTest() {
     OrderUpdateRequestModel order = new OrderUpdateRequestModel();
     order.setFundedAmount(new BigDecimal("3411"));
-    order.setOrderStatus("Funding");
+    order.setFundingStatus("Funded");
     assertThat(order.getFundedAmount()).isEqualTo(new BigDecimal("3411"));
-    assertThat(order.getOrderStatus()).isEqualTo("Funding");
+    assertThat(order.getFundingStatus()).isEqualTo("Funded");
   }
 
   @Test

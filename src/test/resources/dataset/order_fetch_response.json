@@ -2,11 +2,12 @@
    "data":{
       "orderId":"NTR297622",
       "customerId":"MP-CPL-1",
-      "status":"FUNDED",
+      "status":"COMMIT",
       "currency":"USD",
       "totalAmount":34555,
       "fundedAmount":24000,
       "createdOn":"2022-09-14T16:56:30Z",
-      "lastUpdatedOn":"2022-09-14T16:56:30Z"
+      "lastUpdatedOn":"2022-09-14T16:56:30Z",
+      "fundingStatus": "PENDING"
    }
 }

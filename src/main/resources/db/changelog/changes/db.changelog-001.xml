@@ -21,7 +21,7 @@
            <column  name="funded_amount"  type="currency" />
            <column name="last_updated_on" type="java.sql.Types.TIMESTAMP_WITH_TIMEZONE"  />
            <column name="created_on" type="java.sql.Types.TIMESTAMP_WITH_TIMEZONE" />
-
+           <column  name="funding_status"  type="VARCHAR(30)" />
        </createTable>
    </changeSet>
 </databaseChangeLog>

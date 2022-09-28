@@ -15,13 +15,15 @@ class OrderTest {
   @Test
   void OrderAllArgumentConstructorTest() {
     Order order = new Order("NTR3113812", "MP-CPL-1", "funded", "USD", new BigDecimal(1000),
-        new BigDecimal(1000), now, now);
+        new BigDecimal(1000), now, now, "PENDING");
     assertThat(order.getOrderId()).isEqualTo("NTR3113812");
     assertThat(order.getCustomerId()).isEqualTo("MP-CPL-1");
     assertThat(order.getStatus()).isEqualTo("funded");
     assertThat(order.getCurrency()).isEqualTo("USD");
     assertThat(order.getFundedAmount()).isEqualTo(new BigDecimal(1000));
     assertThat(order.getTotalAmount()).isEqualTo(new BigDecimal(1000));
+    assertThat(order.getFundingStatus()).isEqualTo("PENDING");
+
   }
 
   @Test
