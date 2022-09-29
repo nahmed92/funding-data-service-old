@@ -14,17 +14,10 @@ class OrderUpdateRequestModelTest {
 
   @Test
   void orderUpdateRequestModelAllArgumentConstructorTest() {
-    OrderUpdateRequestModel order = new OrderUpdateRequestModel();
-    order.setFundedAmount(new BigDecimal("3411"));
-    order.setFundingStatus("Funded");
+    OrderUpdateRequestModel order = new OrderUpdateRequestModel("Funded",new BigDecimal(3411));
     assertThat(order.getFundedAmount()).isEqualTo(new BigDecimal("3411"));
     assertThat(order.getFundingStatus()).isEqualTo("Funded");
   }
 
-  @Test
-  void OrderNoArgumentConstructorTest() {
-    OrderUpdateRequestModel order = new OrderUpdateRequestModel();
-    assertThat(order).isNotNull();
-  }
 
 }
