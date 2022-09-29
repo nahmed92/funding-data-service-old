@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 
@@ -106,5 +107,14 @@ class FundingDataControllerTest {
         .perform(
             patch("/convera/funding/orders/TR297622").contentType(MediaType.APPLICATION_JSON).content(updateRequest))
         .andExpect(status().is5xxServerError());
+  }
+
+  @Test
+  void shouldThrowHttpMessageNotReadableExceptionWhenUpdateOrder() throws Exception {
+    String updateRequest = TestUtils.getContentFromJsonFile("dataset/update_order_exception_request.json");
+    this.mockMvc
+            .perform(
+                    patch("/convera/funding/orders/TR297622").contentType(MediaType.APPLICATION_JSON).content(updateRequest))
+            .andExpect(status().isBadRequest());
   }
 }
