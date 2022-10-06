@@ -5,5 +5,6 @@
   "currency":"USD",
   "totalAmount":34555,
   "fundedAmount":24000,
-  "fundingStatus": "PENDING"
+  "fundingStatus": "PENDING",
+  "lastUpdatedOn": "2022-10-03T17:43:24Z"
 }

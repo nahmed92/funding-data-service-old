@@ -64,6 +64,12 @@ class FundingDataControllerTest {
   }
 
   @Test
+  void shouldThrow400SaveOrder() throws Exception {
+    String orderRequest = "{}";
+    this.mockMvc.perform(post("/convera/funding/orders").contentType(MediaType.APPLICATION_JSON).content(orderRequest))
+            .andExpect(status().isBadRequest());
+  }
+  @Test
   void shouldThrowExceptionWhensaveOrder() throws Exception {
     doThrow(InternalServerError.class).when(orderRepository).save(any());
     String orderRequest = TestUtils.getContentFromJsonFile("dataset/order_request.json");
