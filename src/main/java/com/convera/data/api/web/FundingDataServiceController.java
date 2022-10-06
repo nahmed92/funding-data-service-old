@@ -5,6 +5,7 @@ import com.convera.common.template.response.error.constants.ResponseErrorCode404
 import com.convera.common.template.response.error.constants.ResponseErrorCode500;
 import com.convera.common.template.response.util.CommonResponseUtil;
 import com.convera.data.api.web.model.OrderPersistResponseModel;
+import com.convera.data.api.web.model.OrderSaveRequestModel;
 import com.convera.data.api.web.model.OrderUpdateRequestModel;
 import com.convera.data.repository.OrderRepository;
 import com.convera.data.repository.model.Order;
@@ -128,11 +129,12 @@ public class FundingDataServiceController {
           @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponse.class)) }) })
   @Trace
   @PostMapping(value = "orders", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<CommonResponse<OrderPersistResponseModel>> saveOrder(@RequestBody Order order,
+  public ResponseEntity<CommonResponse<OrderPersistResponseModel>> saveOrder(@RequestBody OrderSaveRequestModel orderSaveModel,
       @RequestHeader(value = "correlationID", required = false) String correlationID) {
     try {
 
-      Order dbOrder = orderRepository.save(order);
+      Order orderToSave = getOrderToSave(orderSaveModel);
+      Order dbOrder = orderRepository.save(orderToSave);
       OrderPersistResponseModel persistResponseModel = getPersistResponseModel(Optional.ofNullable(dbOrder));
       return ResponseEntity
           .ok(CommonResponseUtil.createResponse200(persistResponseModel, FUNDING_ORDERS, correlationID));
@@ -144,6 +146,20 @@ public class FundingDataServiceController {
                   "Error in saving the record in the DB. Message: " + ex.getMessage()))));
 
     }
+
+  }
+
+  private Order getOrderToSave(OrderSaveRequestModel orderSaveModel) {
+    return new Order(orderSaveModel.getOrderId(),
+            orderSaveModel.getCustomerId(),
+            orderSaveModel.getStatus(),
+            orderSaveModel.getCurrency(),
+            orderSaveModel.getTotalAmount(),
+            orderSaveModel.getFundedAmount(),
+            orderSaveModel.getCreatedOn(),
+            orderSaveModel.getLastUpdatedOn(),
+            orderSaveModel.getFundingStatus());
+
 
   }
 
