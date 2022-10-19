@@ -2,10 +2,10 @@ package com.convera.data.repository.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Data
 @NoArgsConstructor
@@ -28,27 +30,13 @@ public class Order {
 
   @Id
   @NotNull
-  @JsonProperty("orderId")
   private String orderId;
 
   @NotNull
-  @JsonProperty("customerId")
-  private String customerId;
+  private String orderStatus;
 
   @NotNull
-  @JsonProperty("status")
-  private String status;
-
-  @NotNull
-  @JsonProperty("currency")
-  private String currency;
-  
-  @NotNull
-  @JsonProperty("totalAmount")
-  private BigDecimal totalAmount;
-
-  @JsonProperty("fundedAmount")
-  private BigDecimal fundedAmount;
+ private String fundingStatus;
 
   @JsonProperty("createdOn")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -59,8 +47,8 @@ public class Order {
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   private LocalDateTime lastUpdatedOn;
 
-  @JsonProperty("fundingStatus")
-  private String fundingStatus;
-
+/*  @OneToMany(mappedBy = "order",fetch = FetchType.LAZY,
+          cascade = CascadeType.ALL)
+  private Set<Contract> contracts;*/
 
 }

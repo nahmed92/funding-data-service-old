@@ -4,11 +4,19 @@ import com.convera.common.template.CommonResponse;
 import com.convera.common.template.response.error.constants.ResponseErrorCode404;
 import com.convera.common.template.response.error.constants.ResponseErrorCode500;
 import com.convera.common.template.response.util.CommonResponseUtil;
-import com.convera.data.api.web.model.OrderPersistResponseModel;
-import com.convera.data.api.web.model.OrderSaveRequestModel;
-import com.convera.data.api.web.model.OrderUpdateRequestModel;
+import com.convera.data.api.web.model.*;
+import com.convera.data.api.web.model.request.ContractFundingRequestModel;
+import com.convera.data.api.web.model.request.ContractSaveRequestModel;
+import com.convera.data.api.web.model.request.FundingUpdateRequestModel;
+import com.convera.data.api.web.model.request.OrderPersistRequestModel;
+import com.convera.data.api.web.model.response.OrderResponseModel;
+import com.convera.data.repository.ContractFundingRepository;
+import com.convera.data.repository.ContractRepository;
 import com.convera.data.repository.OrderRepository;
+import com.convera.data.repository.model.Contract;
+import com.convera.data.repository.model.ContractFunding;
 import com.convera.data.repository.model.Order;
+import com.convera.data.service.FundingService;
 import datadog.trace.api.Trace;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,13 +29,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The Funding Data Service provides the following:
@@ -49,6 +58,10 @@ public class FundingDataServiceController {
   public static final String FUNDING_ORDERS = "funding/orders";
   @Autowired
   OrderRepository orderRepository;
+
+  @Autowired
+  FundingService fundingService;
+
 
   @Operation(operationId = "getOrder", responses = {
       @ApiResponse(responseCode = "200", description = "Get Order details", content = {
@@ -95,9 +108,9 @@ public class FundingDataServiceController {
         Order orderRec = order.get();
 
         orderRec.setFundingStatus(orderUpdateRequestModel.getFundingStatus());
-        orderRec.setFundedAmount(orderUpdateRequestModel.getFundedAmount());
+      //  orderRec.setFundedAmount(orderUpdateRequestModel.getFundedAmount());
         orderRec.setLastUpdatedOn(LocalDateTime.now(ZoneOffset.UTC));
-        orderPersistResponseModel = getPersistResponseModel(order);
+       // orderPersistResponseModel = getPersistResponseModel(order);
         orderRepository.save(orderRec);
       }
 
@@ -117,12 +130,36 @@ public class FundingDataServiceController {
           .body(CommonResponseUtil.createResponse500(orderPersistResponseModel, FUNDING_ORDERS, correlationID,
               Collections.singletonList(ResponseErrorCode500.ERR_50000.build("funding-data-service",
                   "Error in updating the record in the DB. Message: " + ex.getMessage()))));
-
     }
 
   }
 
-  @Operation(operationId = "persistOrder", responses = {
+  @PostMapping("test")
+  public ResponseEntity<CommonResponse<Order>> postTestInsert(@RequestBody OrderPersistRequestModel orderPersistRequestModel)
+  {
+
+   Order order =fundingService.insertFundingRecord(orderPersistRequestModel);
+   return ResponseEntity.ok().body(CommonResponseUtil.createResponse200(order,"test",null,null));
+
+  }
+
+  @PostMapping("testUpdate")
+  public ResponseEntity<CommonResponse<Set<ContractFunding>>> postTestUpdate(@RequestBody FundingUpdateRequestModel fundingUpdateRequestModel)
+  {
+    Set<ContractFunding> contractFundingSet = fundingService.insertContractFunding(fundingUpdateRequestModel);
+    return ResponseEntity.ok().body(CommonResponseUtil.createResponse200(contractFundingSet,"testUpdate",null,null));
+
+  }
+
+
+  @GetMapping("/testGetOrder/{contractId}")
+  public OrderResponseModel getContractOrderFunding(@PathVariable String contractId)
+  {
+    OrderResponseModel order = fundingService.getCompleteOrderByContractId(contractId);
+    return order;
+  }
+
+  /*@Operation(operationId = "persistOrder", responses = {
       @ApiResponse(responseCode = "200", description = "order response", content = {
           @Content(mediaType = "application/json", schema = @Schema(implementation = OrderPersistenceResponse.class)) }),
       @ApiResponse(responseCode = "500", description = "unexpected error", content = {
@@ -147,9 +184,9 @@ public class FundingDataServiceController {
 
     }
 
-  }
+  }*/
 
-  private Order getOrderToSave(OrderSaveRequestModel orderSaveModel) {
+  /*private Order getOrderToSave(OrderSaveRequestModel orderSaveModel) {
     return new Order(orderSaveModel.getOrderId(),
             orderSaveModel.getCustomerId(),
             orderSaveModel.getStatus(),
@@ -161,9 +198,9 @@ public class FundingDataServiceController {
             orderSaveModel.getFundingStatus());
 
 
-  }
+  }*/
 
-  private OrderPersistResponseModel getPersistResponseModel(Optional<Order> order) {
+/*  private OrderPersistResponseModel getPersistResponseModel(Optional<Order> order) {
     OrderPersistResponseModel orderPersistResponseModel = null;
     if (order.isPresent()) {
       orderPersistResponseModel = OrderPersistResponseModel.builder().orderId(order.get().getOrderId())
@@ -172,7 +209,7 @@ public class FundingDataServiceController {
     }
 
     return orderPersistResponseModel;
-  }
+  }*/
 
   private class OrderPersistenceResponse extends CommonResponse<OrderPersistResponseModel> {
   }

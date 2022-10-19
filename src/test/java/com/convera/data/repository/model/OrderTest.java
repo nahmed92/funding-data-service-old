@@ -14,14 +14,9 @@ class OrderTest {
 
   @Test
   void OrderAllArgumentConstructorTest() {
-    Order order = new Order("NTR3113812", "MP-CPL-1", "funded", "USD", new BigDecimal(1000),
-        new BigDecimal(1000), now, now, "PENDING");
+    Order order = new Order("NTR3113812", "COMMIT_ORDER","PENDING",now,now);
     assertThat(order.getOrderId()).isEqualTo("NTR3113812");
-    assertThat(order.getCustomerId()).isEqualTo("MP-CPL-1");
-    assertThat(order.getStatus()).isEqualTo("funded");
-    assertThat(order.getCurrency()).isEqualTo("USD");
-    assertThat(order.getFundedAmount()).isEqualTo(new BigDecimal(1000));
-    assertThat(order.getTotalAmount()).isEqualTo(new BigDecimal(1000));
+    assertThat(order.getOrderStatus()).isEqualTo("COMMIT_ORDER");
     assertThat(order.getFundingStatus()).isEqualTo("PENDING");
 
   }

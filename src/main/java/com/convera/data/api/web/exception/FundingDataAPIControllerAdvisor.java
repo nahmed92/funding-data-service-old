@@ -23,4 +23,12 @@ public class FundingDataAPIControllerAdvisor {
                 Collections.singletonList(ResponseErrorCode400.ERR_40001.build("funding", ex.getMessage()))));
     }
 
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<CommonResponse<String>> handleDataNotFoundException(DataNotFoundException ex, WebRequest req)
+    {
+
+        return ResponseEntity.badRequest().body(CommonResponseUtil.createResponse400(null,req.getContextPath(),req.getHeader("correlationID"),
+                Collections.singletonList(ResponseErrorCode404.ERR_40400.build("funding", ex.getMessage()))));
+    }
+
 }
