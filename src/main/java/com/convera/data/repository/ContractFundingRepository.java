@@ -4,7 +4,6 @@ import com.convera.data.repository.model.ContractFunding;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Set;
 
 public interface ContractFundingRepository extends CrudRepository<ContractFunding,String> {
 

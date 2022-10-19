@@ -1,6 +1,5 @@
 package com.convera.data.service;
 
-import com.convera.common.template.CommonResponse;
 import com.convera.data.api.web.model.request.FundingUpdateRequestModel;
 import com.convera.data.api.web.model.request.OrderPersistRequestModel;
 import com.convera.data.api.web.model.response.OrderResponseModel;
