@@ -8,26 +8,27 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class ContractFundingResponseModel {
 
-    @NotNull
-    private String uuid;
+  @NotNull
+  private String uuid;
 
-    @NotNull
-    private String contractId;
-    private BigDecimal fundingAmount;
-    private String fundingDate;
-    private String fundingCurrency;
-    private String bankRefNo;
+  @NotNull
+  private String contractId;
+  private BigDecimal fundingAmount;
+  private String fundingDate;
+  private String fundingCurrency;
+  private String bankRefNo;
 
-    @JsonProperty("createdOn")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    private LocalDateTime createdOn;
+  @JsonProperty("createdOn")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  private LocalDateTime createdOn;
 
-    @NotNull
-    @JsonProperty("lastUpdatedOn")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    private LocalDateTime lastUpdatedOn;
+  @NotNull
+  @JsonProperty("lastUpdatedOn")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  private LocalDateTime lastUpdatedOn;
 }

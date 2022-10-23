@@ -1,13 +1,22 @@
 {
-   "data":{
-      "orderId":"NTR297622",
-      "customerId":"MP-CPL-1",
-      "status":"COMMIT",
-      "currency":"USD",
-      "totalAmount":34555,
-      "fundedAmount":24000,
-      "createdOn":"2022-09-14T16:56:30Z",
-      "lastUpdatedOn":"2022-09-14T16:56:30Z",
-      "fundingStatus": "PENDING"
-   }
+  "data": {
+    "order_id": "order1",
+    "order_status": "PENDING",
+    "funding_status": "PENDING",
+    "contracts": [
+      {
+        "contract_id": "contract1",
+        "order_id": "order1",
+        "drawn_down_amount": 300,
+        "trade_amount": 30,
+        "trade_currency": "USD"
+      }
+    ]
+  },
+  "metadata": {
+    "statusCode": 200,
+    "statusDescription": "Success",
+    "path": "/order/order1",
+    "errors": null
+  }
 }

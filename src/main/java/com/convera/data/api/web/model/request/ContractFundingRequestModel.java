@@ -5,23 +5,32 @@ import lombok.Data;
 import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
+
 @Data
 @Builder
 public class ContractFundingRequestModel {
-    @NotNull
-    @NonNull
-    private String contractId;
+  @NotNull
+  @NonNull
+  @JsonProperty("contractId")
+  private String contractId;
 
-    @NotNull
-    @NonNull
-    private BigDecimal fundingAmount;
+  @NotNull
+  @NonNull
+  @JsonProperty("fundingAmount")
+  private BigDecimal fundingAmount;
 
-    private String fundingDate;
+  @JsonProperty("fundingDate")
+  private String fundingDate;
 
-    @NotNull
-    @NonNull
-    private String fundingCurrency;
+  @NotNull
+  @NonNull
+  @JsonProperty("fundingCurrency")
+  private String fundingCurrency;
 
-    private String bankRefNo;
+  @JsonProperty("bankRefNo")
+  private String bankRefNo;
 }

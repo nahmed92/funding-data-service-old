@@ -23,7 +23,6 @@ public class OrderPersistResponseModel {
   @JsonProperty
   private String fundingStatus;
 
-
   @NotNull
   @JsonProperty("lastUpdatedOn")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")

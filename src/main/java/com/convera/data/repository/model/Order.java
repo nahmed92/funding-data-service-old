@@ -5,14 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,6 +26,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "orders")
+@Builder
 public class Order {
 
   @Id
@@ -31,7 +37,11 @@ public class Order {
   private String orderStatus;
 
   @NotNull
- private String fundingStatus;
+  private String fundingStatus;
+  
+  @OneToMany(cascade=CascadeType.ALL)
+  @JoinColumn(name = "orderId") 
+  private Set<Contract> contracts; 
 
   @JsonProperty("createdOn")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -41,7 +51,5 @@ public class Order {
   @JsonProperty("lastUpdatedOn")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   private LocalDateTime lastUpdatedOn;
-
-
 
 }

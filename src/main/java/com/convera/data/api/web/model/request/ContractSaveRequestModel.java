@@ -6,17 +6,18 @@ import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+
 @Data
 @Builder
 public class ContractSaveRequestModel {
 
-    @NotNull
-    @NonNull
-    private String contractId;
+  @NotNull
+  @NonNull
+  private String contractId;
 
-    private BigDecimal drawnDownAmount;
+  private BigDecimal drawnDownAmount;
 
-    private BigDecimal tradeAmount;
+  private BigDecimal tradeAmount;
 
-    private String tradeCurrency;
+  private String tradeCurrency;
 }

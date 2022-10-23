@@ -1,18 +1,21 @@
 package com.convera.data.api.repo;
 
-import com.convera.data.repository.OrderRepository;
-import com.convera.data.repository.model.Order;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Optional;
+import com.convera.data.repository.OrderRepository;
+import com.convera.data.repository.model.Contract;
+import com.convera.data.repository.model.Order;
 
 @DataJpaTest
 public class OrderRepositoryTest {
@@ -24,6 +27,7 @@ public class OrderRepositoryTest {
   private OrderRepository repository;
 
   LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+  
 
   @Test
   public void contextLoads() {
@@ -32,28 +36,71 @@ public class OrderRepositoryTest {
 
   @Test
   void testOrderPersistsAndFetch() {
-    Order orderPersisted = new Order("NTR3113812", "COMMIT_ORDER","PENDING", now, now);
+    Set<Contract> contract = Set.of(Contract.builder()
+        .contractId("ContractId") //
+        .orderId("order1") //
+        .drawnDownAmount(new BigDecimal(100)) //
+        .tradeAmount(new BigDecimal(10)) //
+        .tradeCurrency("USD") //
+        .build());
+    
+    Order orderPersisted = Order.builder()
+        .orderId("order1")
+        .fundingStatus("PENDING") //
+        .orderStatus("PENDING") //
+        .contracts(contract) //
+        .build();
 
     em.persist(orderPersisted);
 
-    Optional<Order> order = repository.findById("NTR3113812");
+    Optional<Order> order = repository.findById("order1");
     Assertions.assertEquals(Boolean.TRUE, order.isPresent());
-    Assertions.assertEquals("NTR3113812", order.get().getOrderId());
+    Assertions.assertEquals("order1", order.get().getOrderId());
     Assertions.assertEquals("PENDING", order.get().getFundingStatus());
+    Assertions.assertEquals(1, order.get().getContracts().size());
 
   }
 
   @Test
   void testOrderUpdate() {
-    Order orderPersisted = new Order("NTR3113812", "COMMIT_ORDER","PENDING", now, now);
+    Set<Contract> contracts = new HashSet<>();
+        
+    contracts.add(Contract.builder()
+        .contractId("ContractId") //
+        .orderId("order1") //
+        .drawnDownAmount(new BigDecimal(100)) //
+        .tradeAmount(new BigDecimal(10)) //
+        .tradeCurrency("USD") //
+        .build());
+    
+    Order orderPersisted = Order.builder()
+        .orderId("order1")
+        .fundingStatus("PENDING") //
+        .orderStatus("PENDING") //
+        .contracts(contracts) //
+        .build();
+
     em.persist(orderPersisted);
-    Optional<Order> order = repository.findById("NTR3113812");
-    Assertions.assertEquals("PENDING", order.get().getFundingStatus());
-    order.get().setOrderStatus("COMMIT");
-    repository.save(order.get());
-    order = null;
-    order = repository.findById("NTR3113812");
+    
+    contracts.add(Contract.builder()
+        .contractId("ContractId_2") //
+        .orderId("order1") //
+        .drawnDownAmount(new BigDecimal(200)) //
+        .tradeAmount(new BigDecimal(20)) //
+        .tradeCurrency("UAD") //
+        .build());
+    Order updateOrderPersisted = Order.builder()
+        .orderId("order1")
+        .fundingStatus("FUNDED") //
+        .orderStatus("COMMIT") //
+        .contracts(contracts)
+        .build();
+    
+    
+    repository.save(updateOrderPersisted);
+    Optional<Order> order = repository.findById("order1");
     Assertions.assertEquals("COMMIT", order.get().getOrderStatus());
+    Assertions.assertEquals(2 , order.get().getContracts().size());
   }
 
 }

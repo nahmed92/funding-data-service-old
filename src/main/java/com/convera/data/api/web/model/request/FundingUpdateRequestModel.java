@@ -10,6 +10,6 @@ import java.util.List;
 @Data
 @Builder
 public class FundingUpdateRequestModel {
-    private String orderId;
-    private List<ContractFundingRequestModel> contractFundingList;
+  private String orderId;
+  private List<ContractFundingRequestModel> contractFundings;
 }

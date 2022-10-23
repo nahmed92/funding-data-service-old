@@ -6,5 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface ContractRepository extends CrudRepository<Contract,String> {
-    public List<Contract> findByOrderId(String orderId);
+    List<Contract> findByOrderId(String orderId);
+    
+    List<Contract> findByOrderIdAndContractId(String orderId, String contractId);
+    
 }

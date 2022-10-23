@@ -8,5 +8,4 @@ import java.util.List;
 public interface ContractFundingRepository extends CrudRepository<ContractFunding,String> {
 
     List<ContractFunding> findByContractId(String contractId);
-
 }
