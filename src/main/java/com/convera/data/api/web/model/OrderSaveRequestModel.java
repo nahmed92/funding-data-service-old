@@ -14,44 +14,44 @@ import java.time.LocalDateTime;
 @Builder
 public class OrderSaveRequestModel {
 
-    @NotNull
-    @NonNull
-    @JsonProperty("orderId")
-    private String orderId;
+  @NotNull
+  @NonNull
+  @JsonProperty("orderId")
+  private String orderId;
 
-    @NotNull
-    @NonNull
-    @JsonProperty("customerId")
-    private String customerId;
+  @NotNull
+  @NonNull
+  @JsonProperty("customerId")
+  private String customerId;
 
-    @NotNull
-    @NonNull
-    @JsonProperty("status")
-    private String status;
+  @NotNull
+  @NonNull
+  @JsonProperty("status")
+  private String status;
 
-    @NotNull
-    @NonNull
-    @JsonProperty("currency")
-    private String currency;
+  @NotNull
+  @NonNull
+  @JsonProperty("currency")
+  private String currency;
 
-    @NotNull
-    @NonNull
-    @JsonProperty("totalAmount")
-    private BigDecimal totalAmount;
+  @NotNull
+  @NonNull
+  @JsonProperty("totalAmount")
+  private BigDecimal totalAmount;
 
-    @JsonProperty("fundedAmount")
-    private BigDecimal fundedAmount;
+  @JsonProperty("fundedAmount")
+  private BigDecimal fundedAmount;
 
-    @JsonProperty("createdOn")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    private LocalDateTime createdOn;
+  @JsonProperty("createdOn")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  private LocalDateTime createdOn;
 
-    @NotNull
-    @NonNull
-    @JsonProperty("lastUpdatedOn")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    private LocalDateTime lastUpdatedOn;
+  @NotNull
+  @NonNull
+  @JsonProperty("lastUpdatedOn")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  private LocalDateTime lastUpdatedOn;
 
-    @JsonProperty("fundingStatus")
-    private String fundingStatus;
+  @JsonProperty("fundingStatus")
+  private String fundingStatus;
 }

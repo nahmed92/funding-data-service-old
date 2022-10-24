@@ -1,10 +1,13 @@
 {
-  "orderId":"NTR297622",
-  "customerId":"MP-CPL-1",
-  "status":"COMMIT",
-  "currency":"USD",
-  "totalAmount":34555,
-  "fundedAmount":24000,
+  "orderId": "order1",
+  "orderStatus": "PENDING",
   "fundingStatus": "PENDING",
-  "lastUpdatedOn": "2022-10-03T17:43:24Z"
+  "contractList": [
+    {
+      "contractId": "contract1",
+      "drawnDownAmount": 300,
+      "tradeAmount": 30,
+      "tradeCurrency": "USD"
+    }
+  ]
 }

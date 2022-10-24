@@ -9,15 +9,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -25,31 +22,31 @@ import java.util.Set;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 
 @Entity
-@Table(name = "orders")
+@Table(name = "contracts")
 @Builder
-public class Order {
+public class Contract {
+    @Id
+    @NotNull
+    private String contractId;
 
-  @Id
-  @NotNull
-  private String orderId;
+    @NotNull
+    private String orderId;
 
-  @NotNull
-  private String orderStatus;
+   private BigDecimal drawnDownAmount;
 
-  @NotNull
-  private String fundingStatus;
-  
-  @OneToMany(cascade=CascadeType.ALL)
-  @JoinColumn(name = "orderId") 
-  private Set<Contract> contracts; 
+    private BigDecimal tradeAmount;
 
-  @JsonProperty("createdOn")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-  private LocalDateTime createdOn;
+    private String tradeCurrency;
 
-  @NotNull
-  @JsonProperty("lastUpdatedOn")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-  private LocalDateTime lastUpdatedOn;
+    @JsonProperty("createdOn")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private LocalDateTime createdOn;
+
+    @NotNull
+    @JsonProperty("lastUpdatedOn")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private LocalDateTime lastUpdatedOn;
+
+
 
 }
