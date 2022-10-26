@@ -1,11 +1,16 @@
 package com.convera.data.api.web.model.request;
 
+import java.math.BigDecimal;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
+/**
+ * contract Save Request Model.
+ *
+ * @Author: Sudarshan Datta
+ */
 
 @Data
 @Builder

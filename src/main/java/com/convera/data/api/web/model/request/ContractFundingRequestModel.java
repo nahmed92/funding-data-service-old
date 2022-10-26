@@ -1,15 +1,17 @@
 package com.convera.data.api.web.model.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.math.BigDecimal;
-
+/**
+ * contract Funding Request Model.
+ *
+ * @Author: Sudarshan Datta
+ */
 @Data
 @Builder
 public class ContractFundingRequestModel {

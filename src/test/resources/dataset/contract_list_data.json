@@ -1,0 +1,12 @@
+[
+  {
+    "uuid": "0d8b6624-9876-4a1a-9c1b-8a69e88d1493",
+    "contract_id": "contract_1",
+    "funding_amount": 1000,
+    "funding_date": "22-01-2022",
+    "funding_currency": "USD",
+    "bank_ref_no": "BOF",
+    "createdOn": "2022-10-24T11:57:42Z",
+    "lastUpdatedOn": "2022-10-24T11:57:42Z"
+  }
+]
