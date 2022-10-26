@@ -1,0 +1,12 @@
+{
+  "orderId": "order_1",
+  "contractFundings": [
+    {
+      "contractId": "contract_1",
+      "fundingAmount": 800,
+      "fundingDate": "22-03-2022",
+      "fundingCurrency": "USD",
+      "bankRefNo": "BFN"
+    }
+  ]
+}

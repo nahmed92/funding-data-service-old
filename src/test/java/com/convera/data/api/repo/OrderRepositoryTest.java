@@ -18,7 +18,7 @@ import com.convera.data.repository.model.Contract;
 import com.convera.data.repository.model.Order;
 
 @DataJpaTest
-public class OrderRepositoryTest {
+ class OrderRepositoryTest {
 
   @Autowired
   private TestEntityManager em;
@@ -30,7 +30,7 @@ public class OrderRepositoryTest {
   
 
   @Test
-  public void contextLoads() {
+   void contextLoads() {
     Assertions.assertNotNull(em);
   }
 

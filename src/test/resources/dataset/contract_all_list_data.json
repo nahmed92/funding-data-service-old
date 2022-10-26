@@ -1,0 +1,11 @@
+[
+    {
+      "contract_id": "contract_1",
+      "order_id": "order_1",
+      "drawn_down_amount": 100,
+      "trade_amount": 10,
+      "trade_currency": "USD",
+      "createdOn": "2022-10-24T15:53:19Z",
+      "lastUpdatedOn": "2022-10-24T15:53:19Z"
+    }
+  ]

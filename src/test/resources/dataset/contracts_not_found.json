@@ -1,0 +1,16 @@
+{
+  "data": null,
+  "metadata": {
+    "statusCode": 404,
+    "statusDescription": "Not found",
+    "path": "/orders/NTR297612/contracts/contract_1/contractsFunding/all",
+    "errors": [
+      {
+        "errorCode": 40400,
+        "errorMessage": "Not found",
+        "errorDetails": "Record for given id not found.",
+        "serviceName": "funding-service-api"
+      }
+    ]
+  }
+}

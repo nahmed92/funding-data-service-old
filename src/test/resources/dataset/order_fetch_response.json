@@ -15,7 +15,7 @@
   },
   "metadata": {
     "statusCode": 200,
-    "statusDescription": "Success",
+    "statusDescription": "success",
     "path": "/order/order1",
     "errors": null
   }

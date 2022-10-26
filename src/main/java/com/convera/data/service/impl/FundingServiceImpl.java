@@ -1,18 +1,5 @@
 package com.convera.data.service.impl;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-
 import com.convera.data.api.web.model.request.ContractFundingRequestModel;
 import com.convera.data.api.web.model.request.ContractSaveRequestModel;
 import com.convera.data.api.web.model.request.FundingUpdateRequestModel;
@@ -24,7 +11,24 @@ import com.convera.data.repository.model.Contract;
 import com.convera.data.repository.model.ContractFunding;
 import com.convera.data.repository.model.Order;
 import com.convera.data.service.FundingService;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
+/**
+ * Funding Servece Implements Funding Service methods.
+ *
+ * @Author: Nasir Ahmed
+ */
 @Service("FundingService")
 public class FundingServiceImpl implements FundingService {
   @Autowired
@@ -36,6 +40,12 @@ public class FundingServiceImpl implements FundingService {
   @Autowired
   ContractFundingRepository contractFundingRepository;
 
+  /**
+   * create Fuinding order Record in Order Object.
+   *
+   * @param orderPersistRequestModel {@link OrderPersistRequestModel}
+   * @return {@link Order}
+   */
   public Order createFundingOrderRecord(OrderPersistRequestModel orderPersistRequestModel) {
     Order order = Order.builder() //
         .orderId(orderPersistRequestModel.getOrderId()) //
@@ -50,8 +60,8 @@ public class FundingServiceImpl implements FundingService {
     return orderRepository.save(order);
   }
 
-  private Set<Contract> createContractsFromRequest(String orderId,
-      List<ContractSaveRequestModel> contractRequestModels) {
+  private Set<Contract> createContractsFromRequest(
+      String orderId, List<ContractSaveRequestModel> contractRequestModels) {
     Set<Contract> contracts = new HashSet<>();
     contractRequestModels.stream().forEach(contratRequest -> {
       Contract contract = Contract.builder() //
@@ -69,14 +79,25 @@ public class FundingServiceImpl implements FundingService {
     return contracts;
   }
 
-  public Set<ContractFunding> insertContractFunding(FundingUpdateRequestModel fundingUpdateRequestModel) {
+  /**
+   * Insert Contract Funding in Contract Funding.
+   *
+   * @param fundingUpdateRequestModel {@link OrderPersistRequestModel}
+   * @return {@link Set ContractFunding}
+   */
+  public Set<ContractFunding> insertContractFunding(
+      FundingUpdateRequestModel fundingUpdateRequestModel) {
     Set<ContractFunding> contractFundingSet = new HashSet<>();
 
-    for (ContractFundingRequestModel contractFundingRequestModel : fundingUpdateRequestModel.getContractFundings()) {
+    for (ContractFundingRequestModel contractFundingRequestModel
+        : fundingUpdateRequestModel.getContractFundings()) {
       ContractFunding conFund = new ContractFunding(UUID.randomUUID().toString(),
-          contractFundingRequestModel.getContractId(), contractFundingRequestModel.getFundingAmount(),
-          contractFundingRequestModel.getFundingDate(), contractFundingRequestModel.getFundingCurrency(),
-          contractFundingRequestModel.getBankRefNo(), LocalDateTime.now(), LocalDateTime.now());
+          contractFundingRequestModel.getContractId(),
+          contractFundingRequestModel.getFundingAmount(),
+          contractFundingRequestModel.getFundingDate(),
+          contractFundingRequestModel.getFundingCurrency(),
+          contractFundingRequestModel.getBankRefNo(),
+          LocalDateTime.now(), LocalDateTime.now());
       contractFundingSet.add(conFund);
     }
     contractFundingRepository.saveAll(contractFundingSet);
@@ -85,8 +106,10 @@ public class FundingServiceImpl implements FundingService {
   }
 
   @Override
-  public List<ContractFunding> getContractFundingByOrderIdAndContractId(String orderId, String contractId) {
-    List<Contract> contracts = contractRepository.findByOrderIdAndContractId(orderId, contractId);
+  public List<ContractFunding> getContractFundingByOrderIdAndContractId(
+      String orderId, String contractId) {
+    List<Contract> contracts = contractRepository.findByOrderIdAndContractId(
+        orderId, contractId);
     if (contracts.isEmpty()) {
       throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
     }
@@ -122,12 +145,14 @@ public class FundingServiceImpl implements FundingService {
 //    Optional<Order> order = orderRepository.findById(contract.get().getOrderId());
 //
 //    // TODO: Represent all in single web response object
-//    OrderResponseModel orderResponseModel = transformToOrderResponseModel(order.get(), allContracts);
+//    OrderResponseModel orderResponseModel =
+//    transformToOrderResponseModel(order.get(), allContracts);
 //    return orderResponseModel;
 //
 //  }
 //
-//  private OrderResponseModel transformToOrderResponseModel(Order order, List<Contract> allContracts) {
+//  private OrderResponseModel transformToOrderResponseModel(
+//  Order order, List<Contract> allContracts) {
 //    return OrderResponseModel.builder().orderId(order.getOrderId()) //
 //        .orderStatus(order.getOrderStatus()) //
 //        .fundingStatus(order.getFundingStatus()) //
@@ -135,15 +160,22 @@ public class FundingServiceImpl implements FundingService {
 //        .build();
 //  }
 //
-//  private List<ContractResponseModel> transformToContractResponseModel(List<Contract> allContracts) {
+//  private List<ContractResponseModel> transformToContractResponseModel(
+//  List<Contract> allContracts) {
 //    List<ContractResponseModel> contractResponseModels = new ArrayList<>();
 //    for (Contract contract : allContracts) {
-//      List<ContractFunding> contractFundingList = contractFundingRepository.findByContractId(contract.getContractId());
-//      ContractResponseModel contractResponseModel = ContractResponseModel.builder().contractId(contract.getContractId())
-//          .contractFundings(transformToContractFundingResponseModel(contractFundingList))
-//          .drawnDownAmount(contract.getDrawnDownAmount()).tradeAmount(contract.getTradeAmount())
-//          .tradeCurrency(contract.getTradeCurrency()).contractId(contract.getContractId())
-//          .orderId(contract.getOrderId()).createdOn(contract.getCreatedOn()).lastUpdatedOn(contract.getLastUpdatedOn())
+//      List<ContractFunding> contractFundingList = contractFundingRepository
+//      .findByContractId(contract.getContractId());
+//      ContractResponseModel contractResponseModel = ContractResponseModel
+//      .builder().contractId(contract.getContractId())
+//          .contractFundings(transformToContractFundingResponseModel(
+//          contractFundingList))
+//          .drawnDownAmount(contract.getDrawnDownAmount()).tradeAmount(contract
+//          .getTradeAmount())
+//          .tradeCurrency(contract.getTradeCurrency()).contractId(contract
+//          .getContractId())
+//          .orderId(contract.getOrderId()).createdOn(contract.getCreatedOn())
+//          .lastUpdatedOn(contract.getLastUpdatedOn())
 //          .build();
 //
 //      contractResponseModels.add(contractResponseModel);
@@ -157,11 +189,16 @@ public class FundingServiceImpl implements FundingService {
 //      List<ContractFunding> contractFundingList) {
 //    List<ContractFundingResponseModel> contractFundingResponseModelList = new ArrayList<>();
 //    for (ContractFunding contractFunding : contractFundingList) {
-//      ContractFundingResponseModel contractFundingResponseModel = ContractFundingResponseModel.builder()
-//          .bankRefNo(contractFunding.getBankRefNo()).contractId(contractFunding.getContractId())
-//          .fundingAmount(contractFunding.getFundingAmount()).fundingCurrency(contractFunding.getFundingCurrency())
-//          .fundingDate(contractFunding.getFundingDate()).uuid(contractFunding.getUuid())
-//          .createdOn(contractFunding.getCreatedOn()).lastUpdatedOn(contractFunding.getLastUpdatedOn()).build();
+//      ContractFundingResponseModel contractFundingResponseModel =
+//      ContractFundingResponseModel.builder()
+//          .bankRefNo(contractFunding.getBankRefNo()).contractId(contractFunding
+//          .getContractId())
+//          .fundingAmount(contractFunding.getFundingAmount()).fundingCurrency(
+//          contractFunding.getFundingCurrency())
+//          .fundingDate(contractFunding.getFundingDate()).uuid(contractFunding
+//          .getUuid())
+//          .createdOn(contractFunding.getCreatedOn()).lastUpdatedOn(contractFunding
+//          .getLastUpdatedOn()).build();
 //      contractFundingResponseModelList.add(contractFundingResponseModel);
 //    }
 //
@@ -169,7 +206,8 @@ public class FundingServiceImpl implements FundingService {
 //
 //  }
 //
-//  private Set<Contract> getContractSet(List<ContractSaveRequestModel> contractSaveRequestModels, String orderId) {
+//  private Set<Contract> getContractSet(List<ContractSaveRequestModel>
+//  contractSaveRequestModels, String orderId) {
 //    Set<Contract> contracts = new LinkedHashSet<>();
 //
 //    if (CollectionUtils.isEmpty(contractSaveRequestModels)) {
@@ -190,6 +228,5 @@ public class FundingServiceImpl implements FundingService {
 //    return contracts;
 //
 //  }
-//  
 
 }
