@@ -1,15 +1,15 @@
 {
   "data": {
-    "order_id": "order1",
-    "order_status": "PENDING",
-    "funding_status": "PENDING",
+    "orderId": "order1",
+    "orderStatus": "PENDING",
+    "fundingStatus": "PENDING",
     "contracts": [
       {
-        "contract_id": "contract1",
-        "order_id": "order1",
-        "drawn_down_amount": 300,
-        "trade_amount": 30,
-        "trade_currency": "USD"
+        "contractId": "contract1",
+        "orderId": "order1",
+        "drawnDownAmount": 300,
+        "tradeAmount": 30,
+        "tradeCurrency": "USD"
       }
     ]
   },

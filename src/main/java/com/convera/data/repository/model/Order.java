@@ -30,12 +30,15 @@ public class Order {
 
   @Id
   @NotNull
+  @JsonProperty("orderId")
   private String orderId;
 
   @NotNull
+  @JsonProperty("orderStatus")
   private String orderStatus;
 
   @NotNull
+  @JsonProperty("fundingStatus")
   private String fundingStatus;
   
   @OneToMany(cascade=CascadeType.ALL)

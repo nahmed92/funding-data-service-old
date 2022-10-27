@@ -31,15 +31,20 @@ import lombok.NoArgsConstructor;
 public class Contract {
   @Id
   @NotNull
+  @JsonProperty("contractId")
   private String contractId;
 
   @NotNull
+  @JsonProperty("orderId")
   private String orderId;
 
+  @JsonProperty("drawnDownAmount")
   private BigDecimal drawnDownAmount;
 
+  @JsonProperty("tradeAmount")
   private BigDecimal tradeAmount;
 
+  @JsonProperty("tradeCurrency")
   private String tradeCurrency;
 
   @JsonProperty("createdOn")
@@ -50,6 +55,5 @@ public class Contract {
   @JsonProperty("lastUpdatedOn")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   private LocalDateTime lastUpdatedOn;
-
 
 }

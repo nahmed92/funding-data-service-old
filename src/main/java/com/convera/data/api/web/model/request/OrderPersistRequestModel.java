@@ -14,17 +14,18 @@ import java.util.List;
 public class OrderPersistRequestModel {
 
   @NotNull
-  @JsonProperty
+  @JsonProperty("orderId")
   private String orderId;
 
   @NotNull
-  @JsonProperty
+  @JsonProperty("orderStatus")
   private String orderStatus;
 
   @NotNull
-  @JsonProperty
+  @JsonProperty("fundingStatus")
   private String fundingStatus;
 
+  @JsonProperty("contracts")
   List<ContractSaveRequestModel> contractList;
 
 }
